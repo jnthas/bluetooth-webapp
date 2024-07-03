@@ -1,0 +1,30 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="google" content="notranslate">
+    <title>Hello world</title>
+    <link href="https://cdn.jsdelivr.net/npm/beercss@3.6.4/dist/cdn/beer.min.css" rel="stylesheet">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3.6.4/dist/cdn/beer.min.js"></script>
+    <script type="module"
+        src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.0" integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw" crossorigin="anonymous"></script>
+
+</head>
+
+<body class="dark">
+    
+    <div hx-get="html/menu.html" hx-swap="innerHTML" hx-trigger="load once">Loading...</div>
+
+    <main class="responsive">
+        <div hx-get="html/tabs.html" hx-swap="innerHTML" hx-trigger="load once">Loading...</div>
+    </main>
+
+    <script src="js/temp.js"></script>
+
+   
+</body>
+
+</html>

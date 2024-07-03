@@ -1,0 +1,48 @@
+
+<div id="home-page" class="page padding">
+    <h3>Home</h3>
+</div>
+
+<div id="mydevices-page" class="page padding active">
+    <h3>My Devices</h3>
+    <button onclick="onRequestBluetoothDeviceButtonClick()">
+        <i>bluetooth</i>
+        <span>Request bluetooth device</span>
+    </button>
+
+
+    <div class="field suffix border round fill">
+        <select id="devicesSelect">
+            <option>No device selected</option>
+        </select>
+        <i>arrow_drop_down</i>
+    </div>
+
+    <button onclick="onForgetBluetoothDeviceButtonClick()">
+        <i>close</i>
+        <span>Forget device</span>
+    </button>
+
+    <button onclick="readCharacteristic()">
+        <i>search</i>
+        <span>Read</span>
+    </button>
+
+
+    <article class="blur">
+        <h5>Live output</h5>
+        <div id="output" class="output">
+            <pre id="log"></pre>
+            <nav class="right-align">
+                <button onclick="clearLog()">Clear</button>
+            </nav>
+    </article>
+</div>
+
+<div id="settings-page" class="page padding">
+    <h3>Settings</h3>
+</div>
+
+<div id="help-page" class="page padding">
+    <h3>Help</h3>
+</div>

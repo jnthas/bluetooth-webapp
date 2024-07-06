@@ -1,7 +1,26 @@
-const SERVICE_UUID = '4cecb214-c658-4755-98b2-d855b6212b01';
-const CHAR_SSID_UUID = '09b62de8-2893-43da-815c-f52aeec43b71';
-const CHAR_PWD_UUID  = '71ff60b1-47cd-4592-905c-68debaa65c3e';
-const CHAR_AUTH_UUID = '78afb192-c71f-4b00-b69e-8f124ee46e89';
+let settings = {
+    "service": {
+        "uuid": "4cecb214-c658-4755-98b2-d855b6212b01",
+        "name": "Clockwise",
+        "characteristics": [
+            {
+                "uuid": "09b62de8-2893-43da-815c-f52aeec43b71",
+                "description":"SSID",
+                "value":""
+            },
+            {
+                "uuid": "71ff60b1-47cd-4592-905c-68debaa65c3e",
+                "description":"Password",
+                "value":""
+            },
+            {
+                "uuid": "78afb192-c71f-4b00-b69e-8f124ee46e89",
+                "description":"Auth Type",
+                "value":""
+            }
+        ]
+    }
+}
 
 
 
@@ -35,10 +54,10 @@ async function populateBluetoothDevices() {
 
 async function onRequestBluetoothDeviceButtonClick() {
     try {
-        log('Requesting any Bluetooth device...' + SERVICE_UUID);
+        log('Requesting any Bluetooth device...');
         const device = await navigator.bluetooth.requestDevice({
             //acceptAllDevices:true
-            filters: [{ services: [SERVICE_UUID] }]
+            filters: [{ services: [settings.service.uuid] }]
         });
 
         log('> Requested ' + device.name + ' (' + device.id + ')');
@@ -61,16 +80,16 @@ async function readCharacteristic() {
     }
     
     var server = await device.gatt.connect();
-    var service = await server.getPrimaryService(SERVICE_UUID);
+    var service = await server.getPrimaryService(settings.service.uuid);
 
-    characteristics = await service.getCharacteristics();
 
-    for (const c of characteristics) {
+    for (const c of settings.service.characteristics) {
+
         var characteristic = await service.getCharacteristic(c.uuid);
         var value = await characteristic.readValue();
         var content = new TextDecoder('utf-8').decode(value);
-
-        log('Characteristic ('+ c.uuid.substring(0,5) +') -> ' + content);
+        c.value = content;    
+        log(c.description + ' ('+ c.uuid.substring(0,5) +') -> ' + c.value);
     }
 
 }
@@ -98,3 +117,8 @@ async function onForgetBluetoothDeviceButtonClick() {
 window.onload = () => {
     populateBluetoothDevices();
 };
+
+
+function loadSettings() {
+    
+}

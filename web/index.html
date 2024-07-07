@@ -8,23 +8,55 @@
     <title>Hello world</title>
     <link href="https://cdn.jsdelivr.net/npm/beercss@3.6.4/dist/cdn/beer.min.css" rel="stylesheet">
     <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3.6.4/dist/cdn/beer.min.js"></script>
-    <script type="module"
-        src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script>
-    <script src="https://unpkg.com/htmx.org@2.0.0" integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw" crossorigin="anonymous"></script>
-
+    <script type="module" src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script type="module" src="main.js"></script>
 </head>
 
 <body class="dark">
     
-    <div hx-get="html/menu.html" hx-swap="innerHTML" hx-trigger="load once">Loading...</div>
+    <!-- MENU -->
+    <nav class="left drawer l">
+        <header>
+            <nav>
+                <img src="../images/bt-favicon.png" class="circle">
+                <h6>Clockwise</h6>
+            </nav>
+        </header>
+    
+        <a data-ui="#home-page" class="active" onclick="Main.changePage(this)">
+            <i>home</i>
+            <div>Home</div>
+        </a>
+        <a data-ui="#mydevices-page"  onclick="Main.changePage(this)">
+            <i>bluetooth</i>
+            <div>My Devices</div>
+        </a>
+        <a data-ui="#settings-page" onclick="Main.changePage(this)">
+            <i>settings</i>
+            <div>Settings</div>
+        </a>
+        <a data-ui="#help-page" onclick="Main.changePage(this)">
+            <i>help</i>
+            <div>Help</div>
+        </a>
+    </nav>
+    
+    <!-- -->
+
 
     <main class="responsive">
-        <div hx-get="html/tabs.html" hx-swap="innerHTML" hx-trigger="load once">Loading...</div>
+        <div id="content"></div>
     </main>
 
-    <script src="js/temp.js"></script>
 
-   
+    <script>
+        $(document).ready(() => {
+            Main.changePage($('nav .active').get(0));
+        }); 
+    </script>
+
+
 </body>
 
 </html>

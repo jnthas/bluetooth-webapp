@@ -1,3 +1,5 @@
+const name = 'MyDevices';
+
 let settings = {
     "service": {
         "uuid": "4cecb214-c658-4755-98b2-d855b6212b01",
@@ -23,28 +25,26 @@ let settings = {
 }
 
 
-
 function clearLog() {
-    document.querySelector('#log').textContent = '';
+    $('#log').text('');
 }
 
 function log(line) {
-    document.querySelector('#log').textContent += line + '\n';
+    $('#log').text($('#log').text() + line + '\n');
 }
 
 async function populateBluetoothDevices() {
-    const devicesSelect = document.querySelector('#devicesSelect');
     try {
         log('Getting existing permitted Bluetooth devices...');
         const devices = await navigator.bluetooth.getDevices();
 
         log('> Got ' + devices.length + ' Bluetooth devices.');
-        devicesSelect.textContent = '';
+        $('#devicesSelect').text('');
         for (const device of devices) {
             const option = document.createElement('option');
             option.value = device.id;
             option.textContent = device.name;
-            devicesSelect.appendChild(option);
+            $('#devicesSelect').appendChild(option);
         }
     }
     catch (error) {
@@ -73,7 +73,7 @@ async function readCharacteristic() {
 
     const devices = await navigator.bluetooth.getDevices();
 
-    const deviceIdToForget = document.querySelector('#devicesSelect').value;
+    const deviceIdToForget = $('#devicesSelect').value();
     const device = devices.find((device) => device.id == deviceIdToForget);
     if (!device) {
         throw new Error('No Bluetooth device found');
@@ -98,7 +98,7 @@ async function onForgetBluetoothDeviceButtonClick() {
     try {
         const devices = await navigator.bluetooth.getDevices();
 
-        const deviceIdToForget = document.querySelector('#devicesSelect').value;
+        const deviceIdToForget = $('#devicesSelect').value();
         const device = devices.find((device) => device.id == deviceIdToForget);
         if (!device) {
             throw new Error('No Bluetooth device to forget');
@@ -119,6 +119,5 @@ window.onload = () => {
 };
 
 
-function loadSettings() {
-    
-}
+export { name, populateBluetoothDevices, onRequestBluetoothDeviceButtonClick, readCharacteristic, onForgetBluetoothDeviceButtonClick };
+export default populateBluetoothDevices;

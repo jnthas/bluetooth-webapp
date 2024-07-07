@@ -3,6 +3,7 @@ import * as home from './pages/home/home.js';
 import * as mydevices from './pages/mydevices/mydevices.js';
 import * as settings from './pages/settings/settings.js';
 
+const name = 'Main';
 
 function removeActiveClass(elem) {
     $('nav a').get().forEach(e => {
@@ -21,13 +22,22 @@ function changePage(elem) {
     
     $('#content').load('pages/' + page + '/' + page + '.html', () => {
         $('#content ' + attrPage).addClass('active');
+        pages[page].onActive();
     });
+
 }
 
 
+const pages = {
+    "home": home,
+    "mydevices": mydevices,
+    "settings": settings,
+    "main": {name, removeActiveClass, changePage}
+}
 
 // make it global
-window[home.name] = home;
-window[mydevices.name] = mydevices;
-window[settings.name] = settings;
-window['Main'] = {removeActiveClass, changePage};
+for (let [key, value] of Object.entries(pages)) {
+    window[value.name] = value;
+}
+
+

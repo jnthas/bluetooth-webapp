@@ -1,6 +1,6 @@
 const name = 'MyDevices';
 
-let settings = {
+let deviceDescription = {
     "service": {
         "uuid": "4cecb214-c658-4755-98b2-d855b6212b01",
         "name": "Clockwise",
@@ -33,91 +33,114 @@ function log(line) {
     $('#log').text($('#log').text() + line + '\n');
 }
 
-async function populateBluetoothDevices() {
-    try {
-        log('Getting existing permitted Bluetooth devices...');
-        const devices = await navigator.bluetooth.getDevices();
+function populateBluetoothDevices() {
+    
+    log('Getting existing permitted Bluetooth devices...');
+    navigator.bluetooth.getDevices().then((devices) => {
 
-        log('> Got ' + devices.length + ' Bluetooth devices.');
-        $('#devicesSelect').text('');
-        for (const device of devices) {
-            const option = document.createElement('option');
-            option.value = device.id;
-            option.textContent = device.name;
-            $('#devicesSelect').appendChild(option);
+        try {
+            log('> Got ' + devices.length + ' Bluetooth devices.');
+            $('#devicesSelect').text('');
+            for (const device of devices) {
+                const option = document.createElement('option');
+                option.value = device.id;
+                option.textContent = device.name;
+                $('#devicesSelect').append(option);
+            }
         }
-    }
-    catch (error) {
-        log('Argh! ' + error);
-    }
+        catch (error) {
+            log('Argh! ' + error);
+        }
+    });
 }
 
-async function onRequestBluetoothDeviceButtonClick() {
-    try {
-        log('Requesting any Bluetooth device...');
-        const device = await navigator.bluetooth.requestDevice({
-            //acceptAllDevices:true
-            filters: [{ services: [settings.service.uuid] }]
-        });
-
+function onRequestBluetoothDeviceButtonClick() {
+    
+    log('Requesting any Bluetooth device...');
+    navigator.bluetooth.requestDevice({
+        //acceptAllDevices:true
+        filters: [{ services: [deviceDescription.service.uuid] }]
+    }).then((device) => {
         log('> Requested ' + device.name + ' (' + device.id + ')');
         populateBluetoothDevices();
-    }
-    catch (error) {
-        log('Argh! ' + error);
-    }
+    });    
 }
 
 
-async function readCharacteristic() {
-
-    const devices = await navigator.bluetooth.getDevices();
-
-    const deviceIdToForget = $('#devicesSelect').value();
-    const device = devices.find((device) => device.id == deviceIdToForget);
-    if (!device) {
-        throw new Error('No Bluetooth device found');
-    }
-    
-    var server = await device.gatt.connect();
-    var service = await server.getPrimaryService(settings.service.uuid);
-
-
-    for (const c of settings.service.characteristics) {
-
-        var characteristic = await service.getCharacteristic(c.uuid);
-        var value = await characteristic.readValue();
-        var content = new TextDecoder('utf-8').decode(value);
-        c.value = content;    
-        log(c.description + ' ('+ c.uuid.substring(0,5) +') -> ' + c.value);
-    }
-
+function readCharacteristicValue(deviceId, charUuid) {
+    return getDeviceById(deviceId).then((device) => {
+        return device.gatt.connect().then((server) => {
+            return server.getPrimaryService(deviceDescription.service.uuid).then((service) => {
+                return service.getCharacteristic(charUuid).then((characteristic) => {
+                    return characteristic.readValue().then((value) => {
+                        return value;                        
+                    });
+                });
+            });
+        });
+    });
 }
 
-async function onForgetBluetoothDeviceButtonClick() {
-    try {
-        const devices = await navigator.bluetooth.getDevices();
 
-        const deviceIdToForget = $('#devicesSelect').value();
-        const device = devices.find((device) => device.id == deviceIdToForget);
-        if (!device) {
-            throw new Error('No Bluetooth device to forget');
+
+function readCharacteristic() {
+    const deviceId = $('#devicesSelect :selected').val();
+  
+    getDeviceById(deviceId).then((device) => {
+        device.gatt.connect().then((server) => {
+            server.getPrimaryService(deviceDescription.service.uuid).then((service) => {
+                for (const c of deviceDescription.service.characteristics) {     
+                    service.getCharacteristic(c.uuid).then((characteristic) => {
+                        characteristic.readValue().then((value) => {
+                            var content = new TextDecoder('utf-8').decode(value);
+                            c.value = content;    
+                            log(c.description + ' ('+ c.uuid.substring(0,5) +') -> ' + c.value);
+                        });
+                    });
+                }
+            });
+        });
+    });
+}
+
+function onForgetBluetoothDeviceButtonClick() {
+    const deviceId = $('#devicesSelect :selected').val();
+  
+    getDeviceById(deviceId).then((device) => {
+        try {
+            log('Forgetting ' + device.name + ' bluetooth device...');
+            device.forget().then(() => {
+                log('  > Bluetooth device has been forgotten.');
+                populateBluetoothDevices();
+            });
         }
-        log('Forgetting ' + device.name + 'Bluetooth device...');
-        await device.forget();
-
-        log('  > Bluetooth device has been forgotten.');
-        populateBluetoothDevices();
-    }
-    catch (error) {
-        log('Argh! ' + error);
-    }
+        catch (error) {
+            log('Argh! ' + error);
+        }
+    });
 }
 
-window.onload = () => {
+function getCurrentDevices() {    
+    return navigator.bluetooth.getDevices();
+}
+
+
+function getDeviceById(id) {
+    return navigator.bluetooth.getDevices().then((devices) => {
+
+        const device = devices.find((device) => device.id == id);
+
+        if (!device) {
+            throw new Error('No Bluetooth device with id ('+id+') found');
+        }
+
+        return device;
+    });
+}
+
+function onActive() {
     populateBluetoothDevices();
-};
+}
 
-
-export { name, populateBluetoothDevices, onRequestBluetoothDeviceButtonClick, readCharacteristic, onForgetBluetoothDeviceButtonClick };
+export { name, deviceDescription, onActive, populateBluetoothDevices, onRequestBluetoothDeviceButtonClick, readCharacteristic, onForgetBluetoothDeviceButtonClick, getCurrentDevices, clearLog, readCharacteristicValue};
 export default populateBluetoothDevices;

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="google" content="notranslate">
-    <title>Hello world</title>
+    <title>Bluetooth Web App</title>
     <link href="https://cdn.jsdelivr.net/npm/beercss@3.6.4/dist/cdn/beer.min.css" rel="stylesheet">
     <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3.6.4/dist/cdn/beer.min.js"></script>
     <script type="module" src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script>
@@ -20,8 +20,8 @@
         <header>
             <nav>
                 <img src="../images/bt-favicon.png" class="circle">
-                <h6>Clockwise</h6>
-            </nav>
+                <h6>Blue Settings</h6>
+            </nav>  
         </header>
     
         <a data-ui="#home-page" class="active" onclick="Main.changePage(this)">
@@ -29,12 +29,12 @@
             <div>Home</div>
         </a>
         <a data-ui="#mydevices-page"  onclick="Main.changePage(this)">
-            <i>bluetooth</i>
+            <i>bluetooth_searching</i>
             <div>My Devices</div>
         </a>
-        <a data-ui="#settings-page" onclick="Main.changePage(this)">
-            <i>settings</i>
-            <div>Settings</div>
+        <a data-ui="#characteristics-page" onclick="Main.changePage(this)">
+            <i>tune</i>
+            <div>Characteristics</div>
         </a>
         <a data-ui="#help-page" onclick="Main.changePage(this)">
             <i>help</i>

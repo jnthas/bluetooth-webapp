@@ -1,7 +1,7 @@
 
 import * as home from './pages/home/home.js';
 import * as mydevices from './pages/mydevices/mydevices.js';
-import * as settings from './pages/settings/settings.js';
+import * as characteristics from './pages/characteristics/characteristics.js';
 
 const name = 'Main';
 
@@ -24,14 +24,12 @@ function changePage(elem) {
         $('#content ' + attrPage).addClass('active');
         pages[page].onActive();
     });
-
 }
-
 
 const pages = {
     "home": home,
     "mydevices": mydevices,
-    "settings": settings,
+    "characteristics": characteristics,
     "main": {name, removeActiveClass, changePage}
 }
 

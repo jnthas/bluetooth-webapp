@@ -4,9 +4,18 @@
     <article class="no-padding">
         <img class="responsive small" src="images/mydevices.png">
         <div class="padding">
-            <h5>Current Device</h5>
-            <p id="current-device"></p>
-            
+            <h5>Last Paired Device</h5>
+    
+            <nav>
+            <a class="chip fill">
+                <i>bluetooth</i>
+                <span id="last-device"></span>
+            </a>
+            </nav>
+
+            <nav class="right-align">
+                <button onclick="Main.changePage($('[data-ui=\'#mydevices-page\']').get(0))">Setup a new device</button>
+            </nav>
         </div>
     </article>
 

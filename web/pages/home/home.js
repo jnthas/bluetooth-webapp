@@ -2,6 +2,8 @@
 const name = 'Home';
 
 function onActive() {
+    $('header h5').text(name);
+    
     MyDevices.getCurrentDevices().then((device) => {
         if (device.length > 0) {
             $('#last-device').text(device[0].name);

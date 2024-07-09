@@ -5,30 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="google" content="notranslate">
-    <title>Bluetooth Web App</title>
+    <title>BTConfig WebApp</title>
     <link href="https://cdn.jsdelivr.net/npm/beercss@3.6.4/dist/cdn/beer.min.css" rel="stylesheet">
     <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3.6.4/dist/cdn/beer.min.js"></script>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script type="module"
+        src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script type="module" src="main.js"></script>
 </head>
 
 <body class="dark">
-    
+
+    <header>
+        <nav>
+            <h5 class="max center-align">BTConfig</h5>
+        </nav>
+    </header>
+
     <!-- MENU -->
-    <nav class="left drawer l">
+    <nav class="m l left drawer">
         <header>
             <nav>
                 <img src="../images/bt-favicon.png" class="circle">
-                <h6>Blue Settings</h6>
-            </nav>  
+                <h6>BTConfig</h6>
+            </nav>
         </header>
-    
+
         <a data-ui="#home-page" class="active" onclick="Main.changePage(this)">
             <i>home</i>
             <div>Home</div>
         </a>
-        <a data-ui="#mydevices-page"  onclick="Main.changePage(this)">
+        <a data-ui="#mydevices-page" onclick="Main.changePage(this)">
             <i>bluetooth_searching</i>
             <div>My Devices</div>
         </a>
@@ -36,12 +44,27 @@
             <i>tune</i>
             <div>Characteristics</div>
         </a>
-        <a data-ui="#help-page" onclick="Main.changePage(this)">
-            <i>help</i>
-            <div>Help</div>
+        <a data-ui="#about-page" onclick="Main.changePage(this)">
+            <i>info</i>
+            <div>About</div>
         </a>
     </nav>
-    
+
+    <nav class="bottom s primary-container">
+        <a data-ui="#home-page" class="active" onclick="Main.changePage(this)">
+            <i>home</i>
+        </a>
+        <a data-ui="#mydevices-page" onclick="Main.changePage(this)">
+            <i>bluetooth_searching</i>
+        </a>
+        <a data-ui="#characteristics-page" onclick="Main.changePage(this)">
+            <i>tune</i>
+        </a>
+        <a data-ui="#about-page" onclick="Main.changePage(this)">
+            <i>info</i>
+        </a>
+    </nav>
+
     <!-- -->
 
 

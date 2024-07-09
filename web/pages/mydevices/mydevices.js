@@ -7,7 +7,7 @@ let deviceDescription = {
         "characteristics": [
             {
                 "uuid": "09b62de8-2893-43da-815c-f52aeec43b71",
-                "description":"SSID",
+                "description":"WiFi SSID",
                 "value":""
             },
             {
@@ -82,8 +82,21 @@ function readCharacteristicValue(deviceId, charUuid) {
 }
 
 
+function writeCharacteristicValue(deviceId, charUuid, value) {
+    return getDeviceById(deviceId).then((device) => {
+        return device.gatt.connect().then((server) => {
+            return server.getPrimaryService(deviceDescription.service.uuid).then((service) => {
+                return service.getCharacteristic(charUuid).then((characteristic) => {
+                    return characteristic.writeValueWithResponse(value);                    
+                });
+            });
+        });
+    });
+}
+
 
 function readCharacteristic() {
+    log('Reading all characteristics, please wait...');
     const deviceId = $('#devicesSelect :selected').val();
   
     getDeviceById(deviceId).then((device) => {
@@ -139,8 +152,9 @@ function getDeviceById(id) {
 }
 
 function onActive() {
+    $('header h5').text(name);
     populateBluetoothDevices();
 }
 
-export { name, deviceDescription, onActive, populateBluetoothDevices, onRequestBluetoothDeviceButtonClick, readCharacteristic, onForgetBluetoothDeviceButtonClick, getCurrentDevices, clearLog, readCharacteristicValue};
+export { name, deviceDescription, onActive, populateBluetoothDevices, onRequestBluetoothDeviceButtonClick, readCharacteristic, onForgetBluetoothDeviceButtonClick, getCurrentDevices, clearLog, readCharacteristicValue, writeCharacteristicValue};
 export default populateBluetoothDevices;

@@ -1,34 +1,38 @@
 
 <div id="mydevices-page" class="page padding">
-    <h3>My Devices</h3>
-    <button onclick="MyDevices.onRequestBluetoothDeviceButtonClick()">
-        <i>bluetooth</i>
-        <span>Request bluetooth device</span>
-    </button>
 
+    <div class="row">
+        <div class="field suffix border round fill max">
+            <select id="devicesSelect">
+                <option>No device selected</option>
+            </select>
+            <i>arrow_drop_down</i>
+        </div>
 
-    <div class="field suffix border round fill">
-        <select id="devicesSelect">
-            <option>No device selected</option>
-        </select>
-        <i>arrow_drop_down</i>
+        <button onclick="MyDevices.onRequestBluetoothDeviceButtonClick()" class="circle">
+            <i>bluetooth</i>
+            <span class="l m">Request bluetooth device</span>
+            <div class="tooltip">Request bluetooth device</div>
+        </button>
+
+        <button onclick="MyDevices.onForgetBluetoothDeviceButtonClick()" class="circle">
+            <i>delete</i>
+            <span class="l m">Forget device</span>
+            <div class="tooltip">Forget device</div>
+        </button>
+
+        <button onclick="MyDevices.readCharacteristic()" class="circle">
+            <i>library_books</i>
+            <span class="l m">Read All Characteristics</span>
+            <div class="tooltip">Read All Characteristics</div>
+        </button>
+        
     </div>
-
-    <button onclick="MyDevices.onForgetBluetoothDeviceButtonClick()">
-        <i>close</i>
-        <span>Forget device</span>
-    </button>
-
-    <button onclick="MyDevices.readCharacteristic()">
-        <i>search</i>
-        <span>Read</span>
-    </button>
-
 
     <article class="blur">
         <h5>Live output</h5>
         <div id="output" class="output">
-            <pre id="log"></pre>
+            <pre id="log" style="overflow-x:scroll;"></pre>
             <nav class="right-align">
                 <button onclick="MyDevices.clearLog()">Clear</button>
             </nav>

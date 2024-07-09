@@ -2,6 +2,7 @@
 import * as home from './pages/home/home.js';
 import * as mydevices from './pages/mydevices/mydevices.js';
 import * as characteristics from './pages/characteristics/characteristics.js';
+import * as about from './pages/about/about.js';
 
 const name = 'Main';
 
@@ -30,6 +31,7 @@ const pages = {
     "home": home,
     "mydevices": mydevices,
     "characteristics": characteristics,
+    "about": about,
     "main": {name, removeActiveClass, changePage}
 }
 

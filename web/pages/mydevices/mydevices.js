@@ -11,12 +11,12 @@ let deviceDescription = {
                 "value":""
             },
             {
-                "uuid": "71ff60b1-47cd-4592-905c-68debaa65c3e",
+                "uuid": "09b62de8-2893-43da-815c-f52aeec43b72",
                 "description":"Password",
                 "value":""
             },
             {
-                "uuid": "78afb192-c71f-4b00-b69e-8f124ee46e89",
+                "uuid": "09b62de8-2893-43da-815c-f52aeec43b73",
                 "description":"Auth Type",
                 "value":""
             }

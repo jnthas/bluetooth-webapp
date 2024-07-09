@@ -5,8 +5,8 @@
 
 #define SERVICE_UUID   "4cecb214-c658-4755-98b2-d855b6212b01"
 #define CHAR_SSID_UUID "09b62de8-2893-43da-815c-f52aeec43b71"
-#define CHAR_PWD_UUID  "71ff60b1-47cd-4592-905c-68debaa65c3e"
-#define CHAR_AUTH_UUID "78afb192-c71f-4b00-b69e-8f124ee46e89"
+#define CHAR_PWD_UUID  "09b62de8-2893-43da-815c-f52aeec43b72"
+#define CHAR_AUTH_UUID "09b62de8-2893-43da-815c-f52aeec43b73"
 
 String ssid = "mywifi";
 String pwd = "pwd";

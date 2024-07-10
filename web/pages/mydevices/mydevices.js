@@ -24,6 +24,10 @@ let deviceDescription = {
     }
 }
 
+const resolveAfter = (value, delay) =>
+    new Promise(resolve => {
+      setTimeout(() => resolve(value, delay));
+    });
 
 function clearLog() {
     $('#log').text('');
@@ -68,17 +72,14 @@ function onRequestBluetoothDeviceButtonClick() {
 
 
 function readCharacteristicValue(deviceId, charUuid) {
-    return getDeviceById(deviceId).then((device) => {
-        return device.gatt.connect().then((server) => {
-            return server.getPrimaryService(deviceDescription.service.uuid).then((service) => {
-                return service.getCharacteristic(charUuid).then((characteristic) => {
-                    return characteristic.readValue().then((value) => {
-                        return value;                        
-                    });
-                });
-            });
-        });
-    });
+    
+    return getDeviceById(deviceId)
+        .then((device) => { return Promise.resolve(device.gatt.connect()); })
+        .then((server) => { return Promise.resolve(server.getPrimaryService(deviceDescription.service.uuid)); })
+        .then((service) => { return Promise.resolve(service.getCharacteristic(charUuid)); })
+        .then((characteristic) => { return Promise.resolve(characteristic.readValue()); })
+        .then((value) => { return Promise.resolve(new TextDecoder('utf-8').decode(value)); })
+        .then((content) => { return new Promise(resolve => setTimeout(() => resolve(content), 10)); });
 }
 
 
@@ -95,26 +96,46 @@ function writeCharacteristicValue(deviceId, charUuid, value) {
 }
 
 
+async function readAllCharacteristicsWithDelay(service) {
+    const characteristics = await service.getCharacteristics();
+    for (let c of characteristics) {
+        await readCharacteristicWithDelay(c, 10);
+    }
+}
+
+function readCharacteristicWithDelay(characteristic, delay) {
+    return new Promise((resolve, reject) => {
+        setTimeout(async () => {
+            try {
+                const charDesc = deviceDescription.service.characteristics.find(c => c.uuid === characteristic.uuid);
+
+                if (charDesc !== undefined) {
+                    const value = await characteristic.readValue();
+                    var content = new TextDecoder('utf-8').decode(value);
+                    log(charDesc.description + ' ('+ charDesc.uuid.substring(0,5) +') -> ' + content);
+                    resolve(content);
+                } else {
+                    log('Characteristic ' + characteristic.uuid + 'not found in device description');
+                }
+                
+            } catch (error) {
+                reject(error);
+            }
+        }, delay);
+    });
+}
+
 function readCharacteristic() {
     log('Reading all characteristics, please wait...');
     const deviceId = $('#devicesSelect :selected').val();
   
-    getDeviceById(deviceId).then((device) => {
-        device.gatt.connect().then((server) => {
-            server.getPrimaryService(deviceDescription.service.uuid).then((service) => {
-                for (const c of deviceDescription.service.characteristics) {     
-                    service.getCharacteristic(c.uuid).then((characteristic) => {
-                        characteristic.readValue().then((value) => {
-                            var content = new TextDecoder('utf-8').decode(value);
-                            c.value = content;    
-                            log(c.description + ' ('+ c.uuid.substring(0,5) +') -> ' + c.value);
-                        });
-                    });
-                }
-            });
-        });
-    });
+    getDeviceById(deviceId)
+        .then((device) => { return Promise.resolve(device.gatt.connect()); })
+        .then((server) => { return Promise.resolve(server.getPrimaryService(deviceDescription.service.uuid)); })
+        .then((service) => { return readAllCharacteristicsWithDelay(service); });
+
 }
+
 
 function onForgetBluetoothDeviceButtonClick() {
     const deviceId = $('#devicesSelect :selected').val();

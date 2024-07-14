@@ -1,5 +1,5 @@
 
-import * as ble from '/BLE.js';
+import * as ble from '../../BLE.js';
 
 const name = 'Home';
 

@@ -1,4 +1,4 @@
-import * as BLE from '/BLE.js';
+import * as BLE from '../../BLE.js';
 
 const name = 'Characteristics';
 
@@ -24,7 +24,6 @@ function onActive() {
 
         div.append(input);
         div.append(progress);
-        div.append(button);
         div.append(spanError);
         article.append(title);
         article.append(div);
@@ -36,6 +35,7 @@ function onActive() {
                 div.removeClass('invalid');
                 spanError.remove();
                 input.val(content);
+                div.append(button);
                 progress.hide();
     
             }).catch((error) => {
@@ -44,6 +44,10 @@ function onActive() {
                 progress.hide();
             });
         })
+
+        promises.push(() => new Promise(resolve => setTimeout(() => resolve(content), 1000)));
+
+
     });
 
     promises.reduce((prev, cur) => prev.then(cur), Promise.resolve());

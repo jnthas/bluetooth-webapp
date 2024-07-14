@@ -1,4 +1,4 @@
-import * as BLE from '/BLE.js';
+import * as BLE from '../../BLE.js';
 
 let currentDeviceId = "";
 const name = 'MyDevices';

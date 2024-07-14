@@ -20,7 +20,7 @@ function onActive() {
         var button = $('<button />').addClass('circle').html('<i>save</i>');
         var spanError = $('<span />').addClass('error');
 
-        button.click(function(){saveValue(device[0].id, c.uuid)});
+        button.click(function(){saveValue(MyDevices.getCurrentDeviceId(), c.uuid)});
 
         div.append(input);
         div.append(progress);
@@ -33,7 +33,7 @@ function onActive() {
         promises.push(() => {
             BLE.readCharacteristic(MyDevices.getCurrentDeviceId(), c.uuid).then((content) => {
                 div.removeClass('invalid');
-                spanError.remove();
+                spanError.text('');
                 input.val(content);
                 div.append(button);
                 progress.hide();
@@ -57,8 +57,9 @@ function onActive() {
 function saveValue(deviceId, charUUID) {
     const newValue = $('#' + charUUID + ' input').val();
     let encoder = new TextEncoder('utf-8');
-    MyDevices.writeCharacteristicValue(deviceId, charUUID, encoder.encode(newValue)).then((c) => {
-        console.log(c);
+    BLE.writeCharacteristic(deviceId, charUUID, encoder.encode(newValue)).then((resp) => {
+        $('#' + charUUID + ' span').text('Characteristic updated!');
+        $('#' + charUUID + ' span').show();
     });
 }
 

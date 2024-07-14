@@ -76,8 +76,7 @@ function writeCharacteristic(deviceId, uuid, value) {
         .then((device) => { return device.gatt.connect()})
         .then((server) => { return server.getPrimaryService(deviceDescription.service.uuid)})
         .then((service) => { return service.getCharacteristic(uuid)})
-        .then((characteristic) => { return characteristic.writeValueWithResponse(value);})
-        .then(() => { return new Promise(resolve => setTimeout(() => resolve(), 10)); });
+        .then((characteristic) => { return characteristic.writeValueWithResponse(value);});
 }
 
 
